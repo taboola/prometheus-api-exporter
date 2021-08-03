@@ -1,0 +1,15 @@
+global:
+  scrape_interval: 10s
+scrape_configs:
+- job_name: api-exporter-collector
+  metrics_path: /metrics
+  static_configs:
+    - targets:
+      - http://url/to/target.json
+  relabel_configs:
+    - source_labels: [__address__]
+      target_label: __param_target
+    - source_labels: [__param_target]
+      target_label: instance
+    - target_label: __address__
+      replacement:  host.docker.internal:9115
